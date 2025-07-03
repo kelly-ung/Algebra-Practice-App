@@ -16,7 +16,7 @@ def generate_equation():
             try:
                 '''
                 General format of the equation:
-                a[variable] [operation] bx = c
+                ax [operation] b[variable] = c
                 where:
                 - x is a random integer which the user will solve for
                 - a and b are random integers
@@ -34,13 +34,13 @@ def generate_equation():
                 # Form the equation based on the operation and variables
                 if operation == '+' and variable == '':
                     c = a + b * x
-                    print(f"{a} + {b}x = {c}, x = {x}")
+                    print(f"{a}x + {b} = {c}, x = {x}")
                 elif operation == '+' and variable == 'x':
                     c = (a + b) * x
                     print(f"{a}x + {b}x = {c}, x = {x}")
                 elif operation == '-' and variable == '':
-                    c = a - b * x
-                    print(f"{a} - {b}x = {c}, x = {x}")
+                    c = a * x - b
+                    print(f"{a}x - {b} = {c}, x = {x}")
                 elif operation == '-' and variable == 'x':
                     c = (a - b) * x
                     print(f"{a}x - {b}x = {c}, x = {x}")

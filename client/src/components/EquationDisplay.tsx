@@ -10,7 +10,7 @@ type EquationProps = {
 const EquationDisplay: React.FC<EquationProps> = ({ a, b, c, operation, variable }) => {
   return (
     <h1>
-      {a}{variable} {operation} {b}x = {c}
+      {a}x {operation} {b}{variable} = {c}
     </h1>
   );
 }
