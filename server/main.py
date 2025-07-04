@@ -33,7 +33,7 @@ def generate_equation():
 
                 # Form the equation based on the operation and variables
                 if operation == '+' and variable == '':
-                    c = a + b * x
+                    c = a * x + b
                     print(f"{a}x + {b} = {c}, x = {x}")
                 elif operation == '+' and variable == 'x':
                     c = (a + b) * x
