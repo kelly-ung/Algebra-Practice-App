@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import bgImage from "./assets/background.svg";
+import { confetti } from "@tsparticles/confetti"; 
 
 import EquationDisplay from "./components/EquationDisplay";
 import AnswerForm from "./components/AnswerForm";
@@ -9,6 +9,8 @@ import NextButton from "./components/NextButton";
 import SolutionDisplay from "./components/SolutionDisplay";
 import Header from "./components/Header";
 import LivesDisplay from "./components/LivesDisplay";
+
+import bgImage from "./assets/background.svg";
 
 type Equation = {
     a: number | null;
@@ -63,6 +65,25 @@ function App() {
     fetchEquation();
   }, []);
 
+  // Use confetti effect when the user answers correctly
+  useEffect(() => {
+    if (result === true) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+
+      // Disable pointer events on the confetti wrapper to allow clicks on other elements
+      setTimeout(() => {
+        const confettiWrapper = document.getElementById("confetti");
+        if (confettiWrapper) {
+          confettiWrapper.style.pointerEvents = "none"; 
+        }
+      }, 300);
+    }
+  }, [result]);
+
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,7 +101,7 @@ function App() {
       <Header />
       <div className="flex flex-col items-center text-center">
         {!loading && (
-          <div className="border-10 border-[#f1bc68] rounded-lg bg-[rgba(255,255,255,0.8)] 
+          <div className="border-10 border-bee-yellow rounded-lg bg-[rgba(255,255,255,0.8)] 
               p-3 sm:p-6 md:p-8 lg:p-12 
               px-6 sm:px-12 md:px-32 lg:px-64 
               mb-12 sm:mb-16 md:mb-20 lg:mb-24">
