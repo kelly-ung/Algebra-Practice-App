@@ -18,7 +18,8 @@ const SolutionDisplay: React.FC<SolutionProps> = ({ show, a, b, c, x, operation,
   const format = () => {
     // If any of the values are null, return an empty string
     if (a == null || b == null || c == null || x == null) return;
-
+    
+    // Write the solution in LaTeX format
     if (operation === "+" && variable === "") {
       return `\\begin{align*}
                 ${a}x + ${b} &= ${c} \\\\
@@ -58,8 +59,8 @@ const SolutionDisplay: React.FC<SolutionProps> = ({ show, a, b, c, x, operation,
     <div>
       {show ? (
         <>
-          <h1>Solution</h1>
-          <BlockMath math={format() ?? ""} />
+          <h1 className="text-3xl font-bold mt-10">Solution</h1>
+          <h2 className="text-2xl"><BlockMath math={format() ?? ""} /></h2>
         </>
       ) : null}
     </div>
