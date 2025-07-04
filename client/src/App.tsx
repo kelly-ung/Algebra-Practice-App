@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import bgImage from "./assets/background.svg";
 
 import EquationDisplay from "./components/EquationDisplay";
 import AnswerForm from "./components/AnswerForm";
 import ResultMessage from "./components/ResultMessage";
 import NextButton from "./components/NextButton";
 import SolutionDisplay from "./components/SolutionDisplay";
+import Header from "./components/Header";
+import LivesDisplay from "./components/LivesDisplay";
 
 type Equation = {
     a: number | null;
@@ -73,45 +76,54 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h1>Title</h1>
-      {!loading && (
-        <div>
-          <EquationDisplay
-            a={equation.a}
-            b={equation.b}
-            c={equation.c}
-            operation={equation.operation}
-            variable={equation.variable}
-          />
-
-          {(result || wrongCount === 3) ? (
-            <p>x = {equation.x}</p>
-          ) : (
-            <AnswerForm
-              userAnswer={userAnswer}
-              setUserAnswer={setUserAnswer}
-              handleSubmit={handleSubmit}
+    <div className="bg-cover bg-center min-h-screen" style={{ backgroundImage: `url(${bgImage})` }}>
+      <Header />
+      <div className="flex flex-col items-center text-center">
+        {!loading && (
+          <div className="border-10 border-[#f1bc68] rounded-lg bg-[rgba(255,255,255,0.8)] 
+              p-3 sm:p-6 md:p-8 lg:p-12 
+              px-6 sm:px-12 md:px-32 lg:px-64 
+              mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+      
+            <LivesDisplay wrongCount={wrongCount} />
+            
+            <EquationDisplay
+              a={equation.a}
+              b={equation.b}
+              c={equation.c}
+              operation={equation.operation}
+              variable={equation.variable}
             />
-          )}
 
-          <ResultMessage result={result} wrongCount={wrongCount} />
+            {(result || wrongCount === 3) ? (
+              <p className="text-3xl">x = {equation.x}</p>
+            ) : (
+              <AnswerForm
+                userAnswer={userAnswer}
+                setUserAnswer={setUserAnswer}
+                setResult={setResult}
+                handleSubmit={handleSubmit}
+              />
+            )}
 
-          {/* Show Next button if user has answered incorrectly 3 times or answered correctly */}
-          <NextButton show={wrongCount === 3 || result === true} onClick={fetchEquation} />
-          
-          {/* Show solution if user has answered incorrectly 3 times */}
-          <SolutionDisplay 
-            show={wrongCount === 3} 
-            a={equation.a}
-            b={equation.b}
-            c={equation.c}
-            x={equation.x}
-            operation={equation.operation}
-            variable={equation.variable}
-          />
-        </div>
-      )}
+            <ResultMessage result={result} wrongCount={wrongCount} />
+
+            {/* Show Next button if user has answered incorrectly 3 times or answered correctly */}
+            <NextButton show={wrongCount === 3 || result === true} onClick={fetchEquation} />
+            
+            {/* Show solution if user has answered incorrectly 3 times */}
+            <SolutionDisplay 
+              show={wrongCount === 3} 
+              a={equation.a}
+              b={equation.b}
+              c={equation.c}
+              x={equation.x}
+              operation={equation.operation}
+              variable={equation.variable}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
