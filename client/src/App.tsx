@@ -2,25 +2,29 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { confetti } from "@tsparticles/confetti"; 
 
+import Header from "./components/Header";
+import LivesDisplay from "./components/LivesDisplay";
 import EquationDisplay from "./components/EquationDisplay";
 import AnswerForm from "./components/AnswerForm";
 import ResultMessage from "./components/ResultMessage";
 import NextButton from "./components/NextButton";
 import SolutionDisplay from "./components/SolutionDisplay";
-import Header from "./components/Header";
-import LivesDisplay from "./components/LivesDisplay";
+import ResultsButton from "./components/ResultsButton";
+import Summary from "./components/Summary";
+import KeepPracticingButton from "./components/KeepPracticingButton";
+import ProgressBar from "./components/ProgressBar";
 
 import bgImage from "./assets/background.svg";
 import githubLogo from "./assets/github-mark.svg";
 
 type Equation = {
-    a: number | null;
-    b: number | null;
-    c: number | null;
-    x: number | null;
-    operation: string;
-    variable: string;
-  };
+  a: number | null;
+  b: number | null;
+  c: number | null;
+  x: number | null;
+  operation: string;
+  variable: string;
+};
 
 function App() {
   const [equation, setEquation] = useState<Equation>({
@@ -34,6 +38,10 @@ function App() {
   const [userAnswer, setUserAnswer] = useState<number | null>(null);
   const [result, setResult] = useState<boolean | null>(null);
   const [wrongCount, setWrongCount] = useState<number>(0);
+  const [correctCount, setCorrectCount] = useState<number>(0);
+  const [questionCount, setQuestionCount] = useState<number>(0);
+  const [showSummary, setShowSummary] = useState<boolean>(false);
+  const [questionResults, setQuestionResults] = useState<(boolean | null)[]>([null, null, null, null, null]);
   const [loading, setLoading] = useState(true);
 
   // Fetch a new equation from the server
@@ -88,61 +96,111 @@ function App() {
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Check if the user's answer is correct
+    // If the user's answer is incorrect
     if (userAnswer !== equation.x) {
+      if (wrongCount + 1 === 3) { // If user has answered incorrectly 3 times then move on
+        setQuestionCount(questionCount + 1);
+        setQuestionResults((prevResults) => {
+          const newResults = [...prevResults];
+          newResults[questionCount] = false; // Store the result for this question
+          return newResults;
+        });
+      }
       setResult(false);
       setWrongCount(wrongCount + 1);
-    } else { 
+    } 
+    // If the user's answer is correct
+    else { 
       setResult(true);
+      setCorrectCount(correctCount + 1);
+      setQuestionCount(questionCount + 1);
+      setQuestionResults((prevResults) => {
+        const newResults = [...prevResults];
+        newResults[questionCount] = true; // Store the result for this question
+        return newResults;
+      });
     }
+  };
+
+  // Handle click for Results button
+  const handleResultsClick = () => {
+    setShowSummary(true);
+  };
+
+  // Handle click for Keep Practicing button
+  const handleKeepPracticingClick = () => {
+    // Reset all states to start a new practice session
+    setShowSummary(false);
+    setCorrectCount(0);
+    setQuestionCount(0);
+    fetchEquation();
+    setQuestionResults([null, null, null, null, null]);
   };
 
   return (
     <div className="bg-cover bg-center min-h-screen" style={{ backgroundImage: `url(${bgImage})` }}>
       <Header />
+
       <div className="flex flex-col items-center text-center">
         {!loading && (
           <div className="border-10 border-bee-yellow rounded-lg bg-[rgba(255,255,255,0.8)] 
               p-3 sm:p-6 md:p-8 lg:p-12 
               px-6 sm:px-12 md:px-32 lg:px-64 
               mb-12 sm:mb-16 md:mb-20 lg:mb-24">
-      
-            <LivesDisplay wrongCount={wrongCount} />
             
-            <EquationDisplay
-              a={equation.a}
-              b={equation.b}
-              c={equation.c}
-              operation={equation.operation}
-              variable={equation.variable}
-            />
-
-            {(result || wrongCount === 3) ? (
-              <p className="text-3xl">x = {equation.x}</p>
+            {showSummary ? (
+              <>
+                {/* Show summary of the number of questions answered correctly */}
+                <Summary correctCount={correctCount} />
+                <KeepPracticingButton onClick={handleKeepPracticingClick} />
+              </>
             ) : (
-              <AnswerForm
-                userAnswer={userAnswer}
-                setUserAnswer={setUserAnswer}
-                setResult={setResult}
-                handleSubmit={handleSubmit}
-              />
-            )}
-
-            <ResultMessage result={result} wrongCount={wrongCount} />
-
-            {/* Show Next button if user has answered incorrectly 3 times or answered correctly */}
-            <NextButton show={wrongCount === 3 || result === true} onClick={fetchEquation} />
+              <>
+                {/* Each question has 3 attempts */}
+                <LivesDisplay wrongCount={wrongCount} />
             
-            {/* Show solution if user has answered incorrectly 3 times */}
-            <SolutionDisplay 
-              show={wrongCount === 3} 
-              a={equation.a}
-              b={equation.b}
-              c={equation.c}
-              x={equation.x}
-              operation={equation.operation}
-              variable={equation.variable}
-            />
+                <EquationDisplay
+                  a={equation.a}
+                  b={equation.b}
+                  c={equation.c}
+                  operation={equation.operation}
+                  variable={equation.variable}
+                />
+
+                {(result || wrongCount === 3) ? (
+                  <p className="text-3xl">x = {equation.x}</p>
+                ) : (
+                  <AnswerForm
+                    userAnswer={userAnswer}
+                    setUserAnswer={setUserAnswer}
+                    setResult={setResult}
+                    handleSubmit={handleSubmit}
+                  />
+                )}
+
+                {/* Show message of whether answer is correct or incorrect */}
+                <ResultMessage result={result} wrongCount={wrongCount} />
+
+                {/* Show Next button if user has answered a question incorrectly 3 times or answered correctly */}
+                <NextButton show={(wrongCount === 3 || result === true) && questionCount !== 5 } onClick={fetchEquation} />
+                
+                {/* Show Results button if user has completed 5 questions */}
+                <ResultsButton show={questionCount === 5} onClick={handleResultsClick}/>
+                
+                {/* Show solution if user has answered incorrectly 3 times */}
+                <SolutionDisplay 
+                  show={wrongCount === 3} 
+                  a={equation.a}
+                  b={equation.b}
+                  c={equation.c}
+                  x={equation.x}
+                  operation={equation.operation}
+                  variable={equation.variable}
+                />
+
+                <ProgressBar questionResults={questionResults} />
+              </>
+            )}
           </div>
         )}
       </div>
