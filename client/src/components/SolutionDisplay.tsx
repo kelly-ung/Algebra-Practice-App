@@ -60,7 +60,7 @@ const SolutionDisplay: React.FC<SolutionProps> = ({ show, a, b, c, x, operation,
       {show ? (
         <>
           <h1 className="text-3xl font-bold mt-10">Solution</h1>
-          <h2 className="text-2xl"><BlockMath math={format() ?? ""} /></h2>
+          <h2 className="text-2xl text-amber-600"><BlockMath math={format() ?? ""} /></h2>
         </>
       ) : null}
     </div>
