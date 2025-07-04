@@ -11,6 +11,7 @@ import Header from "./components/Header";
 import LivesDisplay from "./components/LivesDisplay";
 
 import bgImage from "./assets/background.svg";
+import githubLogo from "./assets/github-mark.svg";
 
 type Equation = {
     a: number | null;
@@ -145,6 +146,13 @@ function App() {
           </div>
         )}
       </div>
+
+      <footer className="flex flex-col justify-center items-center">
+        <p className="text-bee-brown text-sm">Created by Kelly Ung</p>
+        <a href="https://github.com/kelly-ung/Algebra-Practice-App" target="_blank" rel="noopener noreferrer">
+          <img src={githubLogo} alt="GitHub Logo" className="w-8 mt-2" />
+        </a>
+      </footer>
     </div>
   );
 }
