@@ -50,7 +50,7 @@ function App() {
   // Fetch a new equation from the server
   const fetchEquation = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/equation");
+      const response = await axios.get(`${import.meta.env.SERVER_URL}/equation`);
       // Reset state for new equation
       setWrongCount(0);
       setUserAnswer(null);
