@@ -5,7 +5,7 @@ type ProgressBarProps = {
 // Display the progress bar based on the results of the questions
 const ProgressBar: React.FC<ProgressBarProps> = ({ questionResults }) => {
   return (
-    <div className="flex flex-row justify-center gap-2 mt-10">
+    <div className="flex flex-row justify-center gap-2 mb-10">
        {questionResults.map((result, index) => (
             <div
             key={index}
