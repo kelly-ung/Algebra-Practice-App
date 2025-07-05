@@ -45,6 +45,7 @@ function App() {
   const [showSummary, setShowSummary] = useState<boolean>(false);
   const [questionResults, setQuestionResults] = useState<(boolean | null)[]>([null, null, null, null, null]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
 
   // Fetch a new equation from the server
   const fetchEquation = async () => {
@@ -66,8 +67,10 @@ function App() {
       });
 
       setLoading(false);
+      setError(false);
     } catch (error) {
       console.error("Error fetching equation:", error);
+      setError(true);
     }
   };
 
@@ -155,6 +158,15 @@ function App() {
   return (
     <div className="bg-cover bg-center min-h-screen" style={{ backgroundImage: `url(${bgImage})` }}>
       <Header />
+
+      {/* Display error if equation cannot be fetched */}
+      {error && (
+        <div className="flex justify-center items-center mb-8">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+            Error! Unable to load equation. Please try again later.
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-col items-center text-center">
         {!loading && (
