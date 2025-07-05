@@ -16,6 +16,8 @@ import ProgressBar from "./components/ProgressBar";
 
 import bgImage from "./assets/background.svg";
 import githubLogo from "./assets/github-mark.svg";
+import successSound from "./assets/success-sound.mp3";
+import errorSound from "./assets/error-sound.mp3";
 
 type Equation = {
   a: number | null;
@@ -74,9 +76,15 @@ function App() {
     fetchEquation();
   }, []);
 
-  // Use confetti effect when the user answers correctly
+  // Play effects based on the result of the user's answer
   useEffect(() => {
+    // If the result is correct
     if (result === true) {
+      // Play success sound
+      const audio = new Audio(successSound);
+      audio.play();
+
+      // Trigger confetti effect
       confetti({
         particleCount: 100,
         spread: 70,
@@ -90,6 +98,13 @@ function App() {
           confettiWrapper.style.pointerEvents = "none"; 
         }
       }, 300);
+    }
+
+    // If the result is incorrect
+    if (result === false) {
+      // Play error sound
+      const audio = new Audio(errorSound);
+      audio.play();
     }
   }, [result]);
 
@@ -156,6 +171,8 @@ function App() {
               </>
             ) : (
               <>
+                <ProgressBar questionResults={questionResults} />
+                
                 {/* Each question has 3 attempts */}
                 <LivesDisplay wrongCount={wrongCount} />
             
@@ -197,15 +214,13 @@ function App() {
                   operation={equation.operation}
                   variable={equation.variable}
                 />
-
-                <ProgressBar questionResults={questionResults} />
               </>
             )}
           </div>
         )}
       </div>
 
-      <footer className="flex flex-col justify-center items-center">
+      <footer className="flex flex-col justify-center items-center pb-8">
         <p className="text-bee-brown text-sm">Created by Kelly Ung</p>
         <a href="https://github.com/kelly-ung/Algebra-Practice-App" target="_blank" rel="noopener noreferrer">
           <img src={githubLogo} alt="GitHub Logo" className="w-8 mt-2" />
