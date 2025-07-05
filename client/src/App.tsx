@@ -81,9 +81,9 @@ function App() {
   }, []);
 
   // Play effects based on the result of the user's answer
-  useEffect(() => {
+  const playEffect = (sound: string) => {
     // If the result is correct
-    if (result === true) {
+    if (sound === "success") {
       // Play success sound
       const audio = new Audio(successSound);
       audio.play();
@@ -105,12 +105,12 @@ function App() {
     }
 
     // If the result is incorrect
-    if (result === false) {
+    if (sound === "error") {
       // Play error sound
       const audio = new Audio(errorSound);
       audio.play();
     }
-  }, [result]);
+  }
 
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -127,6 +127,7 @@ function App() {
       }
       setResult(false);
       setWrongCount(wrongCount + 1);
+      playEffect("error");
     } 
     // If the user's answer is correct
     else { 
@@ -138,6 +139,7 @@ function App() {
         newResults[questionCount] = true; // Store the result for this question
         return newResults;
       });
+      playEffect("success");
     }
   };
 
