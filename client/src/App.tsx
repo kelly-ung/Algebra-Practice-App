@@ -55,6 +55,7 @@ function App() {
       setWrongCount(0);
       setUserAnswer(null);
       setResult(null);
+      setShowSummary(false);
       
       // Update equation state with fetched data
       setEquation({
@@ -147,12 +148,12 @@ function App() {
 
   // Handle click for Keep Practicing button
   const handleKeepPracticingClick = () => {
-    // Reset all states to start a new practice session
-    setShowSummary(false);
+    // Reset states 
     setCorrectCount(0);
     setQuestionCount(0);
-    fetchEquation();
     setQuestionResults([null, null, null, null, null]);
+    // Start a new practice session
+    fetchEquation();
   };
 
   return (
