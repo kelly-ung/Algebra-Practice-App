@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Generate a random algebraic equation
-@app.route("/equation", methods=["GET"])
+@app.route("/equation", methods=["GET", "POST"])
 def generate_equation():
     try:
         while True: # Loop until a valid equation is generated
