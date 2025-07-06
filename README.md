@@ -114,3 +114,4 @@ git clone https://github.com/kelly-ung/Algebra-Practice-App.git
 - **Honeycomb Design** by [Freepik](https://www.freepik.com/free-vector/honeycomb-hexagons-with-golden-honey_375129873.htm#fromView=keyword&page=1&position=2&uuid=692d334c-1c50-4bf3-83b8-ad583a468f01&query=Honeycomb+Clipart)
 - **Level Up Sound Effect** by [Universfield from Pixabay](https://pixabay.com/sound-effects/level-up-02-199574/)
 - **Error Sound Effect** by [Universfield from Pixabay](https://pixabay.com/sound-effects/error-03-125761/)
+- **SVG icons** by [the makers of Tailwind CSS on Heroicons](https://heroicons.com/)
