@@ -160,86 +160,95 @@ function App() {
 
   return (
     <div className="bg-cover bg-center min-h-screen" style={{ backgroundImage: `url(${bgImage})` }}>
-      <Header />
+      <div className="flex flex-col min-h-[90vh]">
+        <Header />
 
-      {/* Display error if equation cannot be fetched */}
-      {error && (
-        <div className="flex justify-center items-center mb-8">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-            Error! Unable to load equation. Please try again later.
-          </div>
-        </div>
-      )}
-
-      <div className="flex flex-col items-center text-center">
-        {!loading && (
-          <div className="border-10 border-bee-yellow rounded-lg bg-[rgba(255,255,255,0.8)] 
-              p-3 sm:p-6 md:p-8 lg:p-12 
-              px-6 sm:px-12 md:px-32 lg:px-64 
-              mb-12 sm:mb-16 md:mb-20 lg:mb-24">
-            
-            {showSummary ? (
-              <>
-                {/* Show summary of the number of questions answered correctly */}
-                <Summary correctCount={correctCount} />
-                <KeepPracticingButton onClick={handleKeepPracticingClick} />
-              </>
-            ) : (
-              <>
-                <ProgressBar questionResults={questionResults} />
-                
-                {/* Each question has 3 attempts */}
-                <LivesDisplay wrongCount={wrongCount} />
-            
-                <EquationDisplay
-                  a={equation.a}
-                  b={equation.b}
-                  c={equation.c}
-                  operation={equation.operation}
-                  variable={equation.variable}
-                />
-
-                {(result || wrongCount === 3) ? (
-                  <p className="text-3xl">x = {equation.x}</p>
-                ) : (
-                  <AnswerForm
-                    userAnswer={userAnswer}
-                    setUserAnswer={setUserAnswer}
-                    setResult={setResult}
-                    handleSubmit={handleSubmit}
-                  />
-                )}
-
-                {/* Show message of whether answer is correct or incorrect */}
-                <ResultMessage result={result} wrongCount={wrongCount} />
-
-                {/* Show Next button if user has answered a question incorrectly 3 times or answered correctly */}
-                <NextButton show={(wrongCount === 3 || result === true) && questionCount !== 5 } onClick={fetchEquation} />
-                
-                {/* Show Results button if user has completed 5 questions */}
-                <ResultsButton show={questionCount === 5} onClick={handleResultsClick}/>
-                
-                {/* Show solution if user has answered incorrectly 3 times */}
-                <SolutionDisplay 
-                  show={wrongCount === 3} 
-                  a={equation.a}
-                  b={equation.b}
-                  c={equation.c}
-                  x={equation.x}
-                  operation={equation.operation}
-                  variable={equation.variable}
-                />
-              </>
-            )}
+        {/* Display error if equation cannot be fetched */}
+        {error && (
+          <div className="flex justify-center items-center">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+              Error! Unable to load equation. Please try again later.
+            </div>
           </div>
         )}
+
+        <div className="flex flex-col items-center text-center">
+          {!loading && (
+            <div className="border-10 border-bee-yellow rounded-lg bg-[rgba(255,255,255,0.8)] 
+                p-3 sm:p-6 md:p-8 lg:p-12 
+                px-6 sm:px-12 md:px-32 lg:px-64 
+                mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+              
+              {showSummary ? (
+                <>
+                  {/* Show summary of the number of questions answered correctly */}
+                  <Summary correctCount={correctCount} />
+                  <KeepPracticingButton onClick={handleKeepPracticingClick} />
+                </>
+              ) : (
+                <>
+                  <ProgressBar questionResults={questionResults} />
+                  
+                  {/* Each question has 3 attempts */}
+                  <LivesDisplay wrongCount={wrongCount} />
+              
+                  <EquationDisplay
+                    a={equation.a}
+                    b={equation.b}
+                    c={equation.c}
+                    operation={equation.operation}
+                    variable={equation.variable}
+                  />
+
+                  {(result || wrongCount === 3) ? (
+                    <p className="text-3xl">x = {equation.x}</p>
+                  ) : (
+                    <AnswerForm
+                      userAnswer={userAnswer}
+                      setUserAnswer={setUserAnswer}
+                      setResult={setResult}
+                      handleSubmit={handleSubmit}
+                    />
+                  )}
+
+                  {/* Show message of whether answer is correct or incorrect */}
+                  <ResultMessage result={result} wrongCount={wrongCount} />
+
+                  {/* Show Next button if user has answered a question incorrectly 3 times or answered correctly */}
+                  <NextButton show={(wrongCount === 3 || result === true) && questionCount !== 5 } onClick={fetchEquation} />
+                  
+                  {/* Show Results button if user has completed 5 questions */}
+                  <ResultsButton show={questionCount === 5} onClick={handleResultsClick}/>
+                  
+                  {/* Show solution if user has answered incorrectly 3 times */}
+                  <SolutionDisplay 
+                    show={wrongCount === 3} 
+                    a={equation.a}
+                    b={equation.b}
+                    c={equation.c}
+                    x={equation.x}
+                    operation={equation.operation}
+                    variable={equation.variable}
+                  />
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <footer className="flex flex-col justify-center items-center pb-8">
         <p className="text-bee-brown text-sm">Created by Kelly Ung</p>
-        <a href="https://github.com/kelly-ung/Algebra-Practice-App" target="_blank" rel="noopener noreferrer">
-          <img src={githubLogo} alt="GitHub Logo" className="w-8 mt-2" />
-        </a>
+        <div className="flex flex-row mt-2 gap-3">
+          <a href="https://github.com/kelly-ung/Algebra-Practice-App" target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-110 hover:opacity-80">
+            <img src={githubLogo} alt="GitHub Logo" className="w-8" />
+          </a>
+          <a href="mailto:kellyung@myyahoo.com" target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-110 hover:opacity-80">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+            </svg>
+          </a>
+        </div>
       </footer>
     </div>
   );
