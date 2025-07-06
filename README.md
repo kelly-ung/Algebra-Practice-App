@@ -4,7 +4,7 @@ Algebee is an interactive web application designed to help practice solving line
 
 **Try it out**: [algebee.vercel.app/](https://algebee.vercel.app/)
 
-![image](https://github.com/user-attachments/assets/2ea34e62-55ea-44ff-bcae-89b1ef0c4904)
+![image](https://github.com/user-attachments/assets/9015f6ac-bdcf-43bb-b734-50aff2424ca7)
 
 ## Features
 
